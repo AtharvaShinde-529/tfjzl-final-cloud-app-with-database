@@ -1,0 +1,49 @@
+{% extends "onlinecourse/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+  <h1>{{ course.name }}</h1>
+  <img src="{{ course.image.url }}" class="img-fluid" alt="{{ course.name }}">
+  <p>{{ course.description }}</p>
+
+  {% if user.is_authenticated %}
+  <div class="card mt-4">
+    <div class="card-header">
+      <h3>Exam</h3>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#exam">
+        Start Exam
+      </button>
+      <div class="collapse mt-3" id="exam">
+        <form action="{% url 'onlinecourse:submit' course.id %}" method="post">
+          {% csrf_token %}
+          {% for question in course.question_set.all %}
+          <div class="card mb-3">
+            <div class="card-header">
+              <h5>{{ question.content }}</h5>
+            </div>
+            <div class="card-body">
+              {% for choice in question.choice_set.all %}
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                       name="choice" id="choice{{ choice.id }}"
+                       value="{{ choice.id }}">
+                <label class="form-check-label" for="choice{{ choice.id }}">
+                  {{ choice.content }}
+                </label>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+          <input class="btn btn-success" type="submit" value="Submit Exam">
+        </form>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p><a href="{% url 'onlinecourse:login' %}">Login</a> to take the exam.</p>
+  {% endif %}
+</div>
+{% endblock %}

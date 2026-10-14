@@ -1,0 +1,14 @@
+{% extends "onlinecourse/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h1>Welcome to Online Course</h1>
+  <h2>Courses:</h2>
+  <ul>
+    {% for course in courses %}
+    <li><a href="{% url 'onlinecourse:course_details' course.id %}">{{ course.name }}</a></li>
+    {% empty %}
+    <li>No courses yet. Add one in the admin site.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
