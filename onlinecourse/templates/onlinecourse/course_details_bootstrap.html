@@ -3,7 +3,9 @@
 {% block content %}
 <div class="container mt-4">
   <h1>{{ course.name }}</h1>
-  <img src="{{ course.image.url }}" class="img-fluid" alt="{{ course.name }}">
+  {% if course.image %}
+    <img src="{{ course.image.url }}" class="img-fluid" alt="{{ course.name }}">
+  {% endif %}
   <p>{{ course.description }}</p>
 
   {% if user.is_authenticated %}
